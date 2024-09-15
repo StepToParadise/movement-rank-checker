@@ -27,13 +27,17 @@ def fetch_wallet_data(wallet_address, proxy, counters):
 
                 if rank < 50000:
                     counters['rank_50k'] += 1
+                    counters['total_rank_100k'] += 1
                 elif 50000 <= rank < 100000:
                     counters['rank_50k_100k'] += 1
+                    counters['total_rank_100k'] += 1
 
                 if top_percent < 5:
                     counters['top_5'] += 1
+                    counters['total_10'] += 1
                 elif 5 <= top_percent < 10:
                     counters['top_5_10'] += 1
+                    counters['total_10'] += 1
 
                 print(f"Wallet: {wallet_address} | Top: {top_percent:.2f}% | Rank: {rank}")
                 break
@@ -66,8 +70,10 @@ proxies = load_proxies(proxies_file)
 counters = {
     'rank_50k': 0,
     'rank_50k_100k': 0,
+    'total_rank_100k': 0,
     'top_5': 0,
-    'top_5_10': 0
+    'top_5_10': 0,
+    'total_10': 0
 }
 
 with open(wallets_file, 'r') as file:
@@ -86,5 +92,7 @@ for wallet in wallets:
 print("\nFinal Results:")
 print(f"Rank < 50,000: {counters['rank_50k']}")
 print(f"Rank 50,000 - 100,000: {counters['rank_50k_100k']}")
-print(f"Top < 5%: {counters['top_5']}")
-print(f"Top 5%-10%: {counters['top_5_10']}")
+print(f"\nTop < 5%: {counters['top_5']}")
+print(f"Top 5% - 10%: {counters['top_5_10']}")
+print(f"\nTotal < 100,000: {counters['total_rank_100k']}")
+print(f"Total < 10%: {counters['total_10']}")
